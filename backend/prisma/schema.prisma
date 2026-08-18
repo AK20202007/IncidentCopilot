@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model QueryMetric {
+  id             String   @id @default(uuid())
+  query          String
+  executionCount Int      @default(1)
+  totalTimeMs    Float
+  meanTimeMs     Float
+  maxTimeMs      Float
+  timestamp      DateTime @default(now())
+
+  @@index([meanTimeMs])
+  @@index([timestamp])
+}
+
+model Incident {
+  id             String   @id @default(uuid())
+  title          String
+  description    String
+  rootCause      String?
+  suggestedFix   String?
+  status         String   @default("OPEN") // OPEN, RESOLVED
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  affectedQueries String // JSON string of related query IDs
+}

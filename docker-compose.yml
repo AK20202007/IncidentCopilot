@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: copilot_db
+    environment:
+      POSTGRES_USER: copilot
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: incident_copilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
+
+volumes:
+  pgdata:
