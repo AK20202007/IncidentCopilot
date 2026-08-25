@@ -48,4 +48,10 @@ describe('Incident Copilot API', () => {
     expect(incidents.body.length).toEqual(1);
     expect(incidents.body[0].title).toEqual('High Latency Detected');
   });
+
+  it('should return health status', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.status).toEqual('ok');
+  });
 });
